@@ -1,0 +1,91 @@
+{% extends 'layout.html' %} {% block head %}
+<title>Log in</title>
+{% endblock %} {% block body %}
+
+<div
+  class="loginWrapper"
+  style="
+    display: flex;
+    margin-left: 170px;
+    padding-left: 200px;
+    align-items: center;
+    justify-content: center;
+  "
+>
+  <div
+    class="loginLeft"
+    style="display: flex; flex-direction: column; margin-right: 50px"
+  >
+    <img
+      src="{{ url_for('static', filename='pics/' + 'logo.png') }}"
+      alt=""
+      class="logoImg"
+      style="height: 200px"
+    />
+    <span class="loginDesc" style="font-size: 24px; font-style: italic">
+      Connect with friends and the world around you on Otto Buddies
+    </span>
+  </div>
+
+  <div
+    class="loginRight"
+    style="display: flex; flex-direction: column; margin-top: 50px"
+  >
+    <div class="content-section" style="width: 400px">
+      <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+          <a
+            class="border-bottom mb-4"
+            style="display: flex; justify-content: center; font-size: 24px"
+            >LOG IN</a
+          >
+          <div class="form-group">
+            {{ form.email.label(class="form-control-label") }} {% if
+            form.email.errors %} {{ form.email(class="form-control
+            form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.email.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.email(class="form-control form-control-lg") }} {%
+            endif %}
+          </div>
+          <div class="form-group">
+            {{ form.password.label(class="form-control-label") }} {% if
+            form.password.errors %} {{ form.password(class="form-control
+            form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.password.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.password(class="form-control form-control-lg") }}
+            {% endif %}
+          </div>
+          <!-- <div class="form-check">
+            {{ form.remember(class="form-check-input") }} {{
+            form.remember.label(class="form-check-label") }}
+          </div> -->
+        </fieldset>
+        <div class="form-group">
+          {{ form.captcha }}
+        </div>
+        <div class="form-group">
+          {{ form.submit(class="btn btn-primary btn-lg btn-block") }}
+        </div>
+        <small class="text-muted ml-2">
+          <a href="{{ url_for('reset_request') }}">Forgot password?</a>
+        </small> 
+      </form>
+    </div>
+    <div class="border-top pt-3">
+      <small class="text-muted">
+        Need an account?
+        <a class="ml-2" href="{{ url_for('register') }}">Register now</a>
+      </small>
+    </div>
+    {% endblock %}
+  </div>
+</div>

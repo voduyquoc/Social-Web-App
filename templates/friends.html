@@ -1,0 +1,83 @@
+{% extends 'layout.html' %} {% block head %}
+<title>Friends page</title>
+{% endblock %} {% block body %}
+<div class="container" id="main-section">
+  <div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="nav-item">
+        <a class="nav-link active" id="friends-tab" data-toggle="tab" href="#friends" role="tab" aria-controls="friends" aria-selected="true">My Friends</a>
+      </li>
+      <li role="presentation" class="nav-item">
+        <a class="nav-link" id="request-tab" data-toggle="tab" href="#requests" role="tab" aria-controls="requests" aria-selected="false">
+          Friend Requests
+          <span class="badge">{{ num_total_requests }}</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <!-- Friends tab content -->
+      <div class="tab-pane fade show active" id="friends" role="tabpanel" aria-labelledby="friends-tab">
+        <h2>My Friends</h2>
+        <div class="row">
+          {% if friends %}
+            {% for friend in friends %}
+              <div class="col-6 col-sm-2">
+                <img class="rounded-circle article-img" src="{{ url_for('static', filename='pics/profile_pics/' + friend.image_file) }}" alt="{{ friend.username }}"></img>
+                <a style="font-size: 18px; text-transform: capitalize;" href="user/{{ friend.username }}">{{ friend.username }}</a>
+                <!-- Put Unfriend button on user profile page instead -->
+                <!-- <button type="button" class="btn btn-primary" id="unfriend-btn">Unfriend</button> -->
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="col-12">
+              <p>You haven't added any friends. Find friends and connect with them!</p>
+            </div>
+          {% endif %}
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /#friends -->
+
+      <!-- Received Friend Requests tab content -->
+      <div class="tab-pane fade" id="requests" role="tabpanel" aria-labelledby="received-friend-requests-tab">
+        <h2>Received Friend Requests</h2>
+        <div class="row">
+          {% if received_friend_requests %}
+            {% for received_friend_request in received_friend_requests %}
+              <div class="col-6 col-sm-2">
+                <img class="rounded-circle article-img" src="{{ url_for('static', filename='pics/profile_pics/' + received_friend_request.image_file) }}" alt="{{ received_friend_request.username }}"></img>
+                <a href="user/{{ received_friend_request.username }}">{{ received_friend_request.username }}</a>
+                <br /><br />
+                <form id="accept-friend-form" action="/accept-friend" method="post">
+                  <button type="submit" class="btn btn-primary" id="add-friend-btn" name="user_id" style="margin-bottom: 10px" value="{{ received_friend_request.id }}">
+                    <span class="fa fa-user-plus" aria-hidden="true"></span>Confirm
+                  </button>
+                </form>
+                <form id="delete-friend-form" action="/delete-friend" method="post">
+                  <button type="submit" class="btn btn-primary" id="cancel-friend-btn" name="user_id" style="margin-bottom: 10px" value="{{ received_friend_request.id }}">
+                    <span class="fa fa-clock-o" aria-hidden="true"></span>Remove
+                  </button>
+                </form>
+              </div>
+          <!-- /.col -->
+            {% endfor %}
+          {% else %}
+          <div class="col-12">
+            <p>No pending Friend Requests for you.</p>
+          </div>
+          {% endif %}
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /#received-friend-requests -->
+    </div>
+    <!-- /.tab-content -->
+  </div>
+  <!-- /div wrapping the nav tabs and tab panes -->
+</div>
+<!-- /.container -->
+
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'layout.html' %} {% block head %}
+<title>Profile page</title>
+{% endblock %} {% block body %}
+<div class="content-section">
+  <div class="media">
+    <img class="rounded-circle account-img" src="{{ image_file }}" />
+    {% if current_user.dating %}
+    <i
+      class="material-icons"
+      style="
+        color: red;
+        position: relative;
+        right: 45px;
+        top: 10px;
+        font-size: 32px;
+      "
+      >favorite</i
+    >
+    {% endif %}
+    <!-- Show user profile picture -->
+    <div class="media-body">
+      <div
+        class="block"
+        style="display: flex; flex-direction: row; width: 250px"
+      >
+        <h2 class="account-heading">{{ current_user.username }}</h2>
+        <!-- Show user name -->
+        <a class="nav-item nav-link" href="{{ url_for('setting') }}"
+          ><i class="material-icons" style="color: blue">edit</i></a
+        >
+      </div>
+      {% if current_user.is_authenticated %}
+      <!-- If user log in, this page will show below information -->
+      {% if current_user.dating %}
+      <p class="text-secondary">Available and interested in dating.</p>
+      {% endif %}
+      <p class="text-secondary">Email: {{ current_user.email }}</p>
+      <p class="text-secondary">Date of birth: {{ current_user.birthday }}</p>
+      <p class="text-secondary">Gender: {{ current_user.gender }}</p>
+      <p class="text-secondary">
+        Marriage status: {{ current_user.marriage_status }}
+      </p>
+      <p class="text-secondary">
+        Sexual orientation: {{ current_user.sexual_orientation }}
+      </p>
+      <p class="text-secondary">Workplace: {{ current_user.workplace }}</p>
+      <p class="text-secondary">Education: {{ current_user.education }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<div>
+  {% for post in posts %}
+  <!-- Load posts -->
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <small class="text-muted" style="display: flex; flex-direction: row"
+          ><a>{{ post.date_posted.strftime('%Y-%m-%d') }}</a>
+          <a
+            class="nav-item nav-link"
+            href="{{ url_for('post', post_id=post.id) }}"
+          >
+            <i
+              class="material-icons"
+              style="
+                color: blue;
+                display: flex;
+                font-size: 18px;
+                position: absolute;
+                right: 30px;
+                margin-top: -12px;
+              "
+              >edit</i
+            ></a
+          >
+        </small>
+        <!-- Post time -->
+      </div>
+      <h2>
+        <a class="article-title" href="{{ url_for('post', post_id=post.id) }}"
+          >{{ post.title }}</a
+        >
+      </h2>
+      <p class="article-content">{{ post.content }}</p>
+      <!-- Post content -->
+      {% if post.post_image %}
+      <!-- Post image -->
+      <img
+        class="post-img"
+        src="{{ url_for('static', filename='pics/post_pics/' + post.post_image) }}"
+        alt="Post Image"
+      />
+      {% endif %}
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}

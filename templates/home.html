@@ -1,0 +1,86 @@
+{% extends 'layout.html' %} {% block head %}
+<title>Home page</title>
+{% endblock %} {% block body %}
+<!-- If user log in, home page will show user and their friends's post -->
+{% if current_user.is_authenticated %}
+<!-- Check user log in or not -->
+{% for post in posts %}
+<!-- Load posts -->
+
+<div class="homeWrapper" style="display: flex; flex-direction: row">
+  <div
+    class="homeLeft"
+    style="
+      display: flex;
+      flex: 4.5;
+      flex-direction: column;
+      margin-top: 10px;
+      justify-content: center;
+    "
+  >
+    <article class="media content-section">
+      <img
+        class="rounded-circle article-img"
+        src="{{ url_for('static', filename='pics/profile_pics/' + post.author.image_file) }}"
+      />
+      <div class="media-body" style="position: relative">
+        <div class="article-metadata" style="position: relative">
+          <a
+            class="mr-2"
+            href="{{ url_for('user_profile', username=post.author.username) }}"
+            >{{ post.author.username }}</a
+          >
+          <!-- User name -->
+          <small
+            class="text-muted"
+            style="position: absolute; top: 0; right: 15px"
+            ><a href="{{ url_for('post', post_id=post.id) }}"
+              >{{ post.date_posted.strftime('%Y-%m-%d') }}</a
+            ></small
+          >
+          <!-- Post time -->
+        </div>
+        <h2>
+          <a class="article-title" href="{{ url_for('post', post_id=post.id) }}"
+            >{{ post.title }}</a
+          >
+        </h2>
+        <p class="article-content">{{ post.content }}</p>
+        <!-- Post content -->
+        {% if post.post_image %}
+        <!-- Post image -->
+        <img
+          class="post-img"
+          src="{{ url_for('static', filename='pics/post_pics/' + post.post_image) }}"
+          alt="Post Image"
+        />
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %} {% endif %}
+  </div>
+</div>
+<nav aria-label="Page">
+  <ul class="pagination pagination-lg justify-content-center">
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1,
+    left_current=1, right_current=2) %} {% if page_num %} {% if posts.page ==
+    page_num %}
+    <li class="page-item active">
+      <a class="page-link" href="{{ url_for('home', page=page_num) }}"
+        >{{ page_num }}</a
+      >
+    </li>
+    {% else %}
+    <li class="page-item">
+      <a class="page-link" href="{{ url_for('home', page=page_num) }}"
+        >{{ page_num }}</a
+      >
+    </li>
+    {% endif %} {% else %}
+    <li class="page-item disabled">
+      <span class="page-link">...</span>
+    </li>
+    {% endif %} {% endfor %}
+  </ul>
+</nav>
+{% endblock %}

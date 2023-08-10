@@ -1,0 +1,47 @@
+{% extends 'layout.html' %} {% block head %}
+<title>Administration page</title>
+{% endblock %} {% block body %}
+<h1>Admin Dashboard</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Blocked</th>
+      <th>Role</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ "Blocked" if user.blocked else "Unblocked" }}</td>
+      <td>{{ "Admin" if user.is_admin else "User" }}</td>
+      <td>
+        <a href="{{ url_for('user_profile', username=user.username) }}"
+          ><i class="material-icons" style="color: gray">visibility</i></a
+        >
+        <a href="{{ url_for('edit_user', user_id=user.id) }}"
+          ><i class="material-icons" style="color: gray">edit</i></a
+        >
+        <a href="{{ url_for('block_user', user_id=user.id) }}"
+          >{% if user.blocked %} <i class="material-icons" style="color: gray">lock {% else
+          %} <i class="material-icons" style="color: gray">lock_open</i> {%
+          endif %}
+        </a>
+        <a href="{{ url_for('admin_user', user_id=user.id) }}"
+          >{% if user.is_admin %}
+          <i class="material-icons" style="color: grey;">manage_accounts</i> 
+        {% else %}
+          <i class="material-icons"style="color: grey;">person</i>
+        {% endif %}
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

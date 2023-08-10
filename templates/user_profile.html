@@ -1,0 +1,202 @@
+{% extends 'layout.html' %} {% block head %}
+<title>User profile page</title>
+{% endblock %} {% block body %}
+<div class="content-section">
+  <div class="media">
+    <img class="rounded-circle account-img" src="{{ image_file }}" />
+    {% if user.dating %}
+    <i
+      class="material-icons"
+      style="
+        color: red;
+        position: relative;
+        right: 45px;
+        top: 10px;
+        font-size: 32px;
+      "
+      >favorite</i
+    >
+    {% endif %}
+
+    <div class="media-body" style="margin-left: 5px">
+      <div
+        class="block"
+        style="display: flex; flex-direction: row; width: 250px"
+      >
+        <h2 class="account-heading" style="margin-left: 10px">
+          {{ user.username }}
+        </h2>
+        {% if current_user.is_admin %}
+        <a
+          class="nav-item nav-link"
+          href="{{ url_for('edit_user', user_id=user.id) }}"
+          ><i class="material-icons" style="color: gray">edit</i></a
+        >
+        {% endif %}
+        <!-- Username of profile -->
+      </div>
+      <div
+        class="col-xs-12 col-md-4"
+        id="action-box"
+        style="display: flex; flex-direction: row; margin-bottom: 20px"
+        ,
+      >
+        {% if current_user.id != user.id %}
+        <!-- Check if current user is different from the one which their profile is shown  -->
+        {% if not check_blocked or current_user.is_admin %}
+        <!-- Check if current user is blocked from the one which their profile is shown  -->
+        {% if friends %}
+        <!-- If they are friends, show button "Friend" and button "Unfriend" -->
+        <button
+          class="btn btn-primary disabled"
+          id="accepted-btn"
+          style="margin-right: 15px"
+        >
+          <span class="fa fa-users" aria-hidden="true"></span> Friends
+        </button>
+        <form id="delete-friend-form" action="/delete-friend" method="post">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="delete-friend-btn"
+            name="user_id"
+            value="{{ user.id }}"
+            style="margin-right: 15px"
+          >
+            <span class="fa fa-clock-o" aria-hidden="true"></span>Unfriend
+          </button>
+        </form>
+        {% elif pending_request %}
+        <!-- If they are user which you sent friend request -->
+        <button
+          class="btn btn-primary disabled"
+          style="margin-right: 15px"
+          id="requested-btn"
+        >
+          <span class="fa fa-clock-o" aria-hidden="true"></span> Request pending
+        </button>
+        <form id="cancel-friend-form" action="/cancel-friend" method="post">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="cancel-friend-btn"
+            name="user_id"
+            style="margin-right: 15px"
+            value="{{ user.id }}"
+          >
+            <span class="fa fa-clock-o" aria-hidden="true"></span> Cancel
+            request
+          </button>
+        </form>
+        {% elif received_requests %}
+        <!-- If they are user which sent you friend request -->
+        <form id="cancel-friend-form" action="/accept-friend" method="post">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="add-friend-btn"
+            name="user_id"
+            style="margin-right: 15px"
+            value="{{ user.id }}"
+          >
+            <span class="fa fa-clock-o" aria-hidden="true"></span> Confirm
+            request
+          </button>
+        </form>
+        <form id="cancel-friend-form" action="/delete-friend" method="post">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="cancel-friend-btn"
+            name="user_id"
+            style="margin-right: 15px"
+            value="{{ user.id }}"
+          >
+            <span class="fa fa-clock-o" aria-hidden="true"></span> Cancel
+            request
+          </button>
+        </form>
+        {% else %}
+        <!-- If you did not send friend request -->
+        <form id="add-friend-form" action="/add-friend" method="post">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="add-friend-btn"
+            name="user_id"
+            value="{{ user.id }}"
+            style="margin-right: 15px"
+          >
+            <span class="fa fa-user-plus" aria-hidden="true"></span> Add friend
+          </button>
+        </form>
+        {% endif %}
+        <form id="add-friend-form" action="/block-view" method="post">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="add-friend-btn"
+            name="user_id"
+            value="{{ user.id }}"
+            style="margin-right: 15px"
+          >
+            <span class="fa fa-user-plus" aria-hidden="true"></span> {{
+            "Unrestrict" if is_blocked else "Restrict" }}
+          </button>
+        </form>
+        {% endif %} {% endif %}
+      </div>
+      {% if not check_blocked or current_user.is_admin %}
+      <!-- Check if current user is blocked from the one which their profile is shown  -->
+      <!-- If user is admin, they can see anything from any profile as below -->
+      {% if user.dating %}
+      <p class="text-secondary">Available and interested in dating.</p>
+      {% endif %}
+      <p class="text-secondary">Email: {{ user.email }}</p>
+      <p class="text-secondary">Date of birth: {{ user.birthday }}</p>
+      <p class="text-secondary">Gender: {{ user.gender }}</p>
+      <p class="text-secondary">Marriage status: {{ user.marriage_status }}</p>
+      <p class="text-secondary">
+        Sexual orientation: {{ user.sexual_orientation }}
+      </p>
+      <p class="text-secondary">Workplace: {{ user.workplace }}</p>
+      <p class="text-secondary">Education: {{ user.education }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<div>
+  {% if not check_blocked or current_user.is_admin %}
+  <!-- Check if current user is blocked from the one which their profile is shown  -->
+  {% for post in posts %}
+  <!-- Load posts -->
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <small class="text-muted"
+          ><a href="{{ url_for('post', post_id=post.id) }}"
+            >{{ post.date_posted.strftime('%Y-%m-%d') }}</a
+          ></small
+        >
+        <!-- Post time -->
+      </div>
+      <h2>
+        <a class="article-title" href="{{ url_for('post', post_id=post.id) }}"
+          >{{ post.title }}</a
+        >
+      </h2>
+      <p class="article-content">{{ post.content }}</p>
+      <!-- Post content -->
+      {% if post.post_image %}
+      <!-- Post image -->
+      <img
+        class="post-img"
+        src="{{ url_for('static', filename='pics/post_pics/' + post.post_image) }}"
+        alt="Post Image"
+      />
+      {% endif %}
+    </div>
+  </article>
+  {% endfor %} {% endif %}
+</div>
+{% endblock %}

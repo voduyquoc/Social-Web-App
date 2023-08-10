@@ -1,0 +1,154 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<title>Setting page</title>
+{% endblock %}
+
+{% block body %}
+    {% if current_user.is_admin %} 
+        <div class="content-section">
+            <div class="media">
+                <img class="rounded-circle account-img" src="{{ image_file }}">
+                <div class="media-body">
+                    <h2 class="account-heading">{{ user.username }}</h2> <!-- Show username -->
+                    <p class="text-secondary">Email: {{ user.email }}</p> <!-- Show user email -->
+                </div>
+            </div>
+            <form method="POST" action="" enctype="multipart/form-data"> <!-- Form to receive input from user to update their account information -->
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Account Info</legend>
+                    <div class="form-group">
+                        {{ form.username.label(class="form-control-label") }} <!-- Form to update user name -->
+                        {% if form.username.errors %}
+                            {{ form.username(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.username.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.username(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.email.label(class="form-control-label") }} <!-- Form to update user email -->
+                        {% if form.email.errors %}
+                            {{ form.email(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.email(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.dob.label(class="form-control-label") }} <!-- Form to update user birthday -->
+                        {% if form.dob.errors %}
+                            {{ form.dob(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.dob.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.dob(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group" >
+                        {{ form.gender.label(class="form-control-label") }} <!-- Form to update user gender -->
+                        {% if form.gender.errors %}
+                            {{ form.gender(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.gender.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.gender(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group" >
+                        {{ form.marriage_status.label(class="form-control-label") }} <!-- Form to update user marriage status -->
+                        {% if form.marriage_status.errors %}
+                            {{ form.marriage_status(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.marriage_status.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.marriage_status(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group" >
+                        {{ form.sexual_orientation.label(class="form-control-label") }} <!-- Form to update user sexual orientation -->
+                        {% if form.sexual_orientation.errors %}
+                            {{ form.sexual_orientation(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.sexual_orientation.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.sexual_orientation(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group" >
+                        {{ form.dating.label(class="form-control-label") }} <!-- Form to update user dating -->
+                        {% if form.dating.errors %}
+                            {{ form.dating(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.dating.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.dating(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.workplace.label(class="form-control-label") }} <!-- Form to update user workplace -->
+                        {% if form.workplace.errors %}
+                            {{ form.workplace(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.workplace.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.workplace(class="form-control form-control-lg") }} 
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.edu.label(class="form-control-label") }} <!-- Form to update user education -->
+                        {% if form.edu.errors %}
+                            {{ form.edu(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.edu.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.edu(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.picture.label() }} <!-- Form to update profile picture -->
+                        {{ form.picture(class="form-control-file") }}
+                        {% if form.picture.errors %}
+                            {% for error in form.picture.errors %}
+                                <span class="text-danger">{{ error }}</span></br>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }} <!-- Submit button -->
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

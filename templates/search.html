@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<title>Search page</title>
+{% endblock %}
+
+{% block body %}
+<h2>You searched for user</h2> <!-- Search form -->
+<img class="rounded-circle article-img" src="{{ url_for('static', filename='pics/profile_pics/' + user.image_file) }}" alt="{{ user.username }}"></img>
+<a style="font-size: 18px; text-transform: capitalize;" href="{{ url_for('user_profile', username=user.username) }}" >{{ searched }}</a>
+
+
+
+
+{% endblock %}
