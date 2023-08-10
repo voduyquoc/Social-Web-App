@@ -34,7 +34,7 @@ To get started with **Otto Buddies**, simply sign up for an account on the websi
 
 The opening page of Otto buddies looks like below: 
 
-![Screenshot_2023-07-11_155148](/uploads/ee88991922fbce2ae5791fa1bfd470ed/Screenshot_2023-07-11_155148.png)
+<img align="center" src="/static/pics/screenshots/Screenshot_2023-07-11_155148.png">
 
 The existing users can log in to their profiles while new users can create an account to use Otto buddies. 
 To prevent unauthorized entry of bots, we have implemented captcha. Also, in case user forgets the password, he can reset the password with a help of e-mail.
