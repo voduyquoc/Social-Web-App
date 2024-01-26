@@ -159,7 +159,7 @@ Once you click on this tab, you can see a dashboard listing all users. The admin
 
 Clone this repository:
 
-```$ git clone https://code.ovgu.de/ohyh83oc/web-app_otto-buddies.git```
+```$ git clone https://github.com/voduyquoc/Social-Web-App.git```
 
 Create a virtual environment and activate it:
 
